@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generator prompt by Rav AI</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Permanent+Marker&display=swap" rel="stylesheet">
+    
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <style>
+        :root {
+            --green-metallic-1: #0f380f;
+            --green-metallic-2: #1a5c1a;
+            --green-metallic-3: #2d8a2d;
+            --neon-green: #39ff14;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #050a05;
+            color: #e0e0e0;
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Metallic Green Background Animation */
+        .bg-metallic {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(135deg, #050a05 0%, var(--green-metallic-1) 25%, #050a05 50%, var(--green-metallic-2) 75%, #050a05 100%);
+            background-size: 400% 400%;
+            animation: metallicShine 15s ease infinite;
+            z-index: -2;
+        }
+
+        @keyframes metallicShine {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Black Tribal Accents using SVG background */
+        .bg-tribal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M10,0 L30,20 L10,40 L0,30 Z M90,100 L70,80 L90,60 L100,70 Z M0,80 L20,60 L40,80 L20,100 Z M100,20 L80,40 L60,20 L80,0 Z' fill='%23000000' fill-opacity='0.4'/%3E%3C/svg%3E");
+            background-size: 150px 150px;
+            z-index: -1;
+            opacity: 0.6;
+        }
+
+        /* Typography */
+        .font-graffiti {
+            font-family: 'Permanent Marker', cursive;
+            background: linear-gradient(to bottom, #ffffff, var(--neon-green));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8), 0 0 20px rgba(57, 255, 20, 0.4);
+            letter-spacing: 2px;
+        }
+
+        /* UI Elements */
+        .glass-panel {
+            background: rgba(10, 20, 10, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(57, 255, 20, 0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+        }
+
+        .drop-zone {
+            border: 2px dashed rgba(57, 255, 20, 0.4);
+            transition: all 0.3s ease;
+            background: rgba(0, 0, 0, 0.4);
+        }
+
+        .drop-zone:hover, .drop-zone.dragover {
+            border-color: var(--neon-green);
+            background: rgba(57, 255, 20, 0.05);
+            box-shadow: 0 0 15px rgba(57, 255, 20, 0.2);
+        }
+
+        .btn-metallic {
+            background: linear-gradient(180deg, var(--green-metallic-3) 0%, var(--green-metallic-2) 100%);
+            border: 1px solid var(--neon-green);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5), inset 0 1px 2px rgba(255, 255, 255, 0.3);
+            color: white;
+            transition: all 0.2s ease;
+        }
+
+        .btn-metallic:hover {
+            background: linear-gradient(180deg, #35a335 0%, var(--green-metallic-3) 100%);
+            box-shadow: 0 6px 20px rgba(57, 255, 20, 0.4), inset 0 1px 2px rgba(255, 255, 255, 0.4);
+            transform: translateY(-1px);
+        }
+
+        .btn-metallic:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+        }
+
+        .tab-btn {
+            position: relative;
+            color: #888;
+            transition: all 0.3s;
+        }
+
+        .tab-btn.active {
+            color: var(--neon-green);
+            text-shadow: 0 0 10px rgba(57, 255, 20, 0.3);
+        }
+
+        .tab-btn::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0%;
+            height: 2px;
+            background-color: var(--neon-green);
+            transition: width 0.3s ease;
+            box-shadow: 0 0 8px var(--neon-green);
+        }
+
+        .tab-btn.active::after {
+            width: 100%;
+        }
+
+        /* Loading Spinner */
+        .loader {
+            border: 3px solid rgba(57, 255, 20, 0.1);
+            border-radius: 50%;
+            border-top: 3px solid var(--neon-green);
+            width: 24px;
+            height: 24px;
+            -webkit-animation: spin 1s linear infinite; /* Safari */
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .input-dark {
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(57, 255, 20, 0.3);
+            color: white;
+            transition: border-color 0.3s;
+        }
+
+        .input-dark:focus {
+            outline: none;
+            border-color: var(--neon-green);
+            box-shadow: 0 0 10px rgba(57, 255, 20, 0.2);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.5);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--green-metallic-2);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--neon-green);
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="bg-metallic"></div>
+    <div class="bg-tribal"></div>
+
+    <div class="container mx-auto px-4 py-8 max-w-5xl relative z-10">
+        
+        <!-- Header -->
+        <header class="text-center mb-10 relative">
+            <h1 class="font-graffiti text-5xl md:text-7xl mb-2 tracking-wider">Generator prompt</h1>
+            <p class="text-xl md:text-2xl font-bold text-gray-300 tracking-widest uppercase" style="text-shadow: 0 2px 4px rgba(0,0,0,0.8);">by Rav AI</p>
+            
+            <button onclick="downloadApp()" class="absolute top-0 right-0 mt-2 flex items-center gap-2 text-xs md:text-sm text-gray-400 hover:text-green-400 transition-colors bg-black/40 px-3 py-1.5 rounded-full border border-gray-700 hover:border-green-500">
+                <i class="ph ph-download-simple text-lg"></i>
+                <span class="hidden md:inline">Unduh Aplikasi</span>
+            </button>
+        </header>
+
+        <!-- Tab Navigation -->
+        <div class="flex justify-center gap-8 mb-8 border-b border-gray-800 pb-2">
+            <button onclick="switchTab('tab-desc')" id="btn-tab-desc" class="tab-btn active text-lg font-medium pb-2 flex items-center gap-2">
+                <i class="ph ph-text-aa"></i> App Deskripsi
+            </button>
+            <button onclick="switchTab('tab-gen')" id="btn-tab-gen" class="tab-btn text-lg font-medium pb-2 flex items-center gap-2">
+                <i class="ph ph-image"></i> App Generate Gambar
+            </button>
+        </div>
+
+        <main>
+            <!-- TAB 1: App Deskripsi -->
+            <div id="tab-desc" class="block animate-fade-in">
+                <div class="glass-panel p-6 md:p-8">
+                    <p class="text-sm text-gray-400 mb-6 text-center">
+                        Unggah gambar untuk mendapatkan deskripsi prompt super detail. <br/>
+                        <span class="text-green-400 text-xs">(Mendukung Drag & Drop, dan Paste gambar langsung dari Clipboard)</span>
+                    </p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <!-- Input Section -->
+                        <div class="flex flex-col gap-4">
+                            <label class="text-sm font-medium text-gray-300">Gambar Referensi</label>
+                            
+                            <div id="desc-drop-zone" class="drop-zone rounded-xl h-64 flex flex-col items-center justify-center cursor-pointer relative overflow-hidden group" onclick="document.getElementById('desc-file-input').click()">
+                                <input type="file" id="desc-file-input" class="hidden" accept="image/*" onchange="handleFileSelect(event, 'desc-preview', 'desc-img-data')">
+                                
+                                <div id="desc-placeholder" class="text-center px-4 flex flex-col items-center">
+                                    <i class="ph ph-upload-simple text-4xl text-gray-400 mb-2 group-hover:text-green-400 transition-colors"></i>
+                                    <p class="text-sm text-gray-300">Klik, Drag & Drop, atau Paste (Ctrl+V)</p>
+                                </div>
+                                
+                                <img id="desc-preview" src="" alt="Preview" class="absolute inset-0 w-full h-full object-contain hidden bg-black/80 backdrop-blur-sm">
+                                
+                                <!-- Hidden input to store base64 -->
+                                <input type="hidden" id="desc-img-data">
+                            </div>
+
+                            <button id="btn-generate-desc" onclick="generateDescription()" class="btn-metallic rounded-lg py-3 font-bold text-lg mt-4 flex justify-center items-center gap-2 w-full">
+                                <i class="ph ph-magic-wand"></i> Ekstrak Deskripsi Detail
+                            </button>
+                        </div>
+
+                        <!-- Output Section -->
+                        <div class="flex flex-col gap-4">
+                            <div class="flex justify-between items-end">
+                                <label class="text-sm font-medium text-gray-300">Hasil Prompt</label>
+                                <button onclick="copyToClipboard('desc-output')" class="text-xs flex items-center gap-1 text-green-400 hover:text-white transition-colors bg-green-900/30 px-2 py-1 rounded border border-green-500/30">
+                                    <i class="ph ph-copy"></i> Salin
+                                </button>
+                            </div>
+                            
+                            <div class="relative h-full min-h-[16rem]">
+                                <textarea id="desc-output" readonly class="input-dark w-full h-full rounded-xl p-4 resize-none leading-relaxed" placeholder="Hasil prompt akan muncul di sini..."></textarea>
+                                
+                                <!-- Loading overlay -->
+                                <div id="desc-loading" class="absolute inset-0 bg-black/80 backdrop-blur-sm rounded-xl hidden flex-col items-center justify-center border border-green-500/30">
+                                    <div class="loader mb-3"></div>
+                                    <p class="text-sm text-green-400 animate-pulse">Menganalisis detail gambar...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 2: App Generate Gambar -->
+            <div id="tab-gen" class="hidden animate-fade-in">
+                <div class="glass-panel p-6 md:p-8">
+                    <p class="text-sm text-gray-400 mb-6 text-center">
+                        Generate gambar baru dari prompt dan referensi gambar menggunakan model Nano Banana.
+                        <br/>
+                        <span class="text-green-400 text-xs">(Mendukung Drag & Drop, dan Paste gambar. Sediakan 2 referensi jika diperlukan).</span>
+                    </p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <!-- Left Col: Inputs -->
+                        <div class="flex flex-col gap-5">
+                            
+                            <!-- Prompt Input -->
+                            <div class="flex flex-col gap-2">
+                                <label class="text-sm font-medium text-gray-300">Teks Prompt</label>
+                                <textarea id="gen-prompt" class="input-dark w-full rounded-xl p-3 h-28 resize-none" placeholder="Masukkan prompt detail Anda di sini..."></textarea>
+                            </div>
+
+                            <!-- Image Inputs (2 Columns) -->
+                            <div class="grid grid-cols-2 gap-4">
+                                <!-- Image 1 -->
+                                <div class="flex flex-col gap-2">
+                                    <label class="text-xs text-gray-400">Referensi 1 (Opsional)</label>
+                                    <div id="gen-drop-zone-1" class="drop-zone rounded-xl h-32 flex flex-col items-center justify-center cursor-pointer relative overflow-hidden group" onclick="document.getElementById('gen-file-1').click()">
+                                        <input type="file" id="gen-file-1" class="hidden" accept="image/*" onchange="handleFileSelect(event, 'gen-preview-1', 'gen-data-1')">
+                                        <div id="gen-placeholder-1" class="text-center px-2">
+                                            <i class="ph ph-plus text-2xl text-gray-500 group-hover:text-green-400"></i>
+                                        </div>
+                                        <img id="gen-preview-1" src="" alt="Ref 1" class="absolute inset-0 w-full h-full object-cover hidden bg-black/80">
+                                        <button onclick="clearImage(event, 1)" id="gen-clear-1" class="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 hidden hover:bg-red-600 z-10"><i class="ph ph-x text-xs"></i></button>
+                                        <input type="hidden" id="gen-data-1">
+                                        <input type="hidden" id="gen-mime-1">
+                                    </div>
+                                </div>
+
+                                <!-- Image 2 -->
+                                <div class="flex flex-col gap-2">
+                                    <label class="text-xs text-gray-400">Referensi 2 (Opsional)</label>
+                                    <div id="gen-drop-zone-2" class="drop-zone rounded-xl h-32 flex flex-col items-center justify-center cursor-pointer relative overflow-hidden group" onclick="document.getElementById('gen-file-2').click()">
+                                        <input type="file" id="gen-file-2" class="hidden" accept="image/*" onchange="handleFileSelect(event, 'gen-preview-2', 'gen-data-2')">
+                                        <div id="gen-placeholder-2" class="text-center px-2">
+                                            <i class="ph ph-plus text-2xl text-gray-500 group-hover:text-green-400"></i>
+                                        </div>
+                                        <img id="gen-preview-2" src="" alt="Ref 2" class="absolute inset-0 w-full h-full object-cover hidden bg-black/80">
+                                        <button onclick="clearImage(event, 2)" id="gen-clear-2" class="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 hidden hover:bg-red-600 z-10"><i class="ph ph-x text-xs"></i></button>
+                                        <input type="hidden" id="gen-data-2">
+                                        <input type="hidden" id="gen-mime-2">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button id="btn-generate-img" onclick="generateImage()" class="btn-metallic rounded-lg py-3 font-bold text-lg mt-2 flex justify-center items-center gap-2 w-full shadow-[0_0_15px_rgba(57,255,20,0.3)]">
+                                <i class="ph ph-palette"></i> Generate Gambar (Nano Banana)
+                            </button>
+                        </div>
+
+                        <!-- Right Col: Output -->
+                        <div class="flex flex-col gap-2">
+                            <label class="text-sm font-medium text-gray-300">Hasil Render</label>
+                            
+                            <div class="glass-panel relative h-full min-h-[24rem] rounded-xl overflow-hidden border border-green-500/30 flex items-center justify-center bg-black/50 group">
+                                
+                                <!-- Empty state -->
+                                <div id="gen-empty-state" class="text-center text-gray-500 flex flex-col items-center">
+                                    <i class="ph ph-image-square text-6xl mb-2 opacity-50"></i>
+                                    <p class="text-sm">Gambar hasil generate akan tampil di sini</p>
+                                </div>
+
+                                <!-- Result Image -->
+                                <img id="gen-result-img" src="" alt="Generated Image" class="w-full h-full object-contain hidden transition-transform duration-500 group-hover:scale-105">
+
+                                <!-- Action Buttons Overlay -->
+                                <div id="gen-actions" class="absolute top-3 right-3 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 hidden">
+                                    <button onclick="previewImageFullscreen()" class="bg-black/60 hover:bg-black/90 text-white p-2 rounded-full border border-gray-600 hover:border-green-400 transition-colors tooltip relative" title="Preview Fullscreen">
+                                        <i class="ph ph-arrows-out text-lg"></i>
+                                    </button>
+                                    <button onclick="downloadGeneratedImage()" class="bg-black/60 hover:bg-black/90 text-white p-2 rounded-full border border-gray-600 hover:border-green-400 transition-colors tooltip relative" title="Download Gambar">
+                                        <i class="ph ph-download-simple text-lg"></i>
+                                    </button>
+                                </div>
+
+                                <!-- Loading overlay -->
+                                <div id="gen-loading" class="absolute inset-0 bg-black/80 backdrop-blur-md hidden flex-col items-center justify-center z-20">
+                                    <div class="loader mb-4 w-12 h-12 border-4"></div>
+                                    <p class="text-sm text-green-400 animate-pulse font-medium">Nano Banana sedang merender gambar...</p>
+                                    <p class="text-xs text-gray-400 mt-2">Memproses prompt dan referensi visual</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <footer class="text-center mt-12 text-sm text-gray-500">
+            &copy; 2026 Generator prompt by Rav AI. All rights reserved.
+        </footer>
+    </div>
+
+    <!-- Fullscreen Image Modal -->
+    <div id="fullscreen-modal" class="fixed inset-0 bg-black/95 z-50 hidden flex-col items-center justify-center p-4 backdrop-blur-xl">
+        <button onclick="closeModal()" class="absolute top-4 right-4 text-white hover:text-green-400 bg-white/10 p-2 rounded-full transition-colors">
+            <i class="ph ph-x text-2xl"></i>
+        </button>
+        <img id="fullscreen-img" src="" alt="Fullscreen Preview" class="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl border border-green-500/20">
+        <button onclick="downloadGeneratedImage()" class="mt-6 btn-metallic px-6 py-2 rounded-full flex items-center gap-2">
+            <i class="ph ph-download-simple"></i> Download High Res
+        </button>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="fixed bottom-4 right-4 transform translate-y-20 opacity-0 bg-green-900 border border-green-500 text-white px-4 py-3 rounded-lg shadow-lg transition-all duration-300 z-50 flex items-center gap-2">
+        <i id="toast-icon" class="ph ph-check-circle text-xl text-green-400"></i>
+        <span id="toast-msg">Teks berhasil disalin!</span>
+    </div>
+
+    <script>
+        const API_KEY = ""; // Let Canvas inject this
+
+        // State Management
+        let activeTab = 'tab-desc';
+
+        function switchTab(tabId) {
+            // Hide all
+            document.getElementById('tab-desc').classList.add('hidden');
+            document.getElementById('tab-gen').classList.add('hidden');
+            document.getElementById('btn-tab-desc').classList.remove('active');
+            document.getElementById('btn-tab-gen').classList.remove('active');
+
+            // Show target
+            document.getElementById(tabId).classList.remove('hidden');
+            document.getElementById('btn-' + tabId).classList.add('active');
+            activeTab = tabId;
+        }
+
+        function showToast(message, isError = false) {
+            const toast = document.getElementById('toast');
+            const msg = document.getElementById('toast-msg');
+            const icon = document.getElementById('toast-icon');
+            
+            msg.textContent = message;
+            if (isError) {
+                toast.classList.replace('bg-green-900', 'bg-red-900');
+                toast.classList.replace('border-green-500', 'border-red-500');
+                icon.className = 'ph ph-warning-circle text-xl text-red-400';
+            } else {
+                toast.classList.replace('bg-red-900', 'bg-green-900');
+                toast.classList.replace('border-red-500', 'border-green-500');
+                icon.className = 'ph ph-check-circle text-xl text-green-400';
+            }
+
+            toast.style.transform = 'translateY(0)';
+            toast.style.opacity = '1';
+
+            setTimeout(() => {
+                toast.style.transform = 'translateY(20px)';
+                toast.style.opacity = '0';
+            }, 3000);
+        }
+
+        function copyToClipboard(elementId) {
+            const el = document.getElementById(elementId);
+            if (!el.value) {
+                showToast("Tidak ada teks untuk disalin!", true);
+                return;
+            }
+            
+            el.select();
+            el.setSelectionRange(0, 99999);
+            document.execCommand("copy");
+            window.getSelection().removeAllRanges();
+            
+            showToast("Prompt berhasil disalin ke clipboard!");
+        }
+
+        function downloadApp() {
+            const htmlContent = document.documentElement.outerHTML;
+            const blob = new Blob([htmlContent], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'Rav_AI_Prompt_Generator.html';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            showToast("Aplikasi berhasil diunduh! Buka file HTML di browser kapan saja.");
+        }
+
+        
+        function getBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = () => resolve({
+                    data: reader.result.split(',')[1],
+                    mimeType: file.type,
+                    full: reader.result
+                });
+                reader.onerror = error => reject(error);
+            });
+        }
+
+        async function processFile(file, previewId, dataId, placeholderId, clearBtnId = null) {
+            if (!file.type.startsWith('image/')) {
+                showToast("Mohon unggah file gambar yang valid.", true);
+                return;
+            }
+
+            try {
+                const base64Info = await getBase64(file);
+                
+                // Set Preview
+                const previewEl = document.getElementById(previewId);
+                previewEl.src = base64Info.full;
+                previewEl.classList.remove('hidden');
+                
+                // Hide Placeholder
+                if (placeholderId) {
+                    const placeholderEl = document.getElementById(placeholderId);
+                    if(placeholderEl) placeholderEl.classList.add('hidden');
+                }
+
+                // Show Clear Button
+                if (clearBtnId) {
+                    document.getElementById(clearBtnId).classList.remove('hidden');
+                }
+
+                // Set Hidden Input Data
+                document.getElementById(dataId).value = base64Info.data;
+                
+                // Special handling for Gen Tab Mime Type
+                if (dataId.startsWith('gen-data')) {
+                    const idx = dataId.split('-')[2];
+                    document.getElementById('gen-mime-' + idx).value = base64Info.mimeType;
+                }
+                
+                showToast("Gambar berhasil dimuat!");
+
+            } catch (err) {
+                console.error(err);
+                showToast("Gagal memuat gambar.", true);
+            }
+        }
+
+        function handleFileSelect(event, previewId, dataId) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            let placeholderId = previewId.includes('desc') ? 'desc-placeholder' : `gen-placeholder-${previewId.split('-')[2]}`;
+            let clearBtnId = previewId.includes('gen') ? `gen-clear-${previewId.split('-')[2]}` : null;
+            
+            processFile(file, previewId, dataId, placeholderId, clearBtnId);
+        }
+
+        function clearImage(event, index) {
+            event.stopPropagation(); // Prevent opening file dialog
+            
+            document.getElementById(`gen-preview-${index}`).src = '';
+            document.getElementById(`gen-preview-${index}`).classList.add('hidden');
+            document.getElementById(`gen-placeholder-${index}`).classList.remove('hidden');
+            document.getElementById(`gen-clear-${index}`).classList.add('hidden');
+            document.getElementById(`gen-data-${index}`).value = '';
+            document.getElementById(`gen-mime-${index}`).value = '';
+            document.getElementById(`gen-file-${index}`).value = '';
+        }
+
+        // Global Paste Handler
+        window.addEventListener('paste', e => {
+            const items = (e.clipboardData || e.originalEvent.clipboardData).items;
+            let imageFile = null;
+
+            for (let index in items) {
+                const item = items[index];
+                if (item.kind === 'file' && item.type.startsWith('image/')) {
+                    imageFile = item.getAsFile();
+                    break;
+                }
+            }
+
+            if (!imageFile) return;
+
+            if (activeTab === 'tab-desc') {
+                processFile(imageFile, 'desc-preview', 'desc-img-data', 'desc-placeholder');
+            } else {
+                // Determine which slot is empty in Tab 2
+                const slot1Data = document.getElementById('gen-data-1').value;
+                const slot2Data = document.getElementById('gen-data-2').value;
+
+                if (!slot1Data) {
+                    processFile(imageFile, 'gen-preview-1', 'gen-data-1', 'gen-placeholder-1', 'gen-clear-1');
+                } else if (!slot2Data) {
+                    processFile(imageFile, 'gen-preview-2', 'gen-data-2', 'gen-placeholder-2', 'gen-clear-2');
+                } else {
+                    // Both full, overwrite slot 1
+                    processFile(imageFile, 'gen-preview-1', 'gen-data-1', 'gen-placeholder-1', 'gen-clear-1');
+                    showToast("Gambar paste menimpa Referensi 1");
+                }
+            }
+        });
+
+        // Setup Drag & Drop Zones
+        function setupDragAndDrop(zoneId, fileInputId, previewId, dataId, placeholderId, clearBtnId = null) {
+            const zone = document.getElementById(zoneId);
+            
+            zone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                zone.classList.add('dragover');
+            });
+
+            zone.addEventListener('dragleave', (e) => {
+                e.preventDefault();
+                zone.classList.remove('dragover');
+            });
+
+            zone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                zone.classList.remove('dragover');
+                
+                if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+                    const file = e.dataTransfer.files[0];
+                    processFile(file, previewId, dataId, placeholderId, clearBtnId);
+                    
+                    // Assign to hidden input for form completeness
+                    const dt = new DataTransfer();
+                    dt.items.add(file);
+                    document.getElementById(fileInputId).files = dt.files;
+                }
+            });
+        }
+
+        setupDragAndDrop('desc-drop-zone', 'desc-file-input', 'desc-preview', 'desc-img-data', 'desc-placeholder');
+        setupDragAndDrop('gen-drop-zone-1', 'gen-file-1', 'gen-preview-1', 'gen-data-1', 'gen-placeholder-1', 'gen-clear-1');
+        setupDragAndDrop('gen-drop-zone-2', 'gen-file-2', 'gen-preview-2', 'gen-data-2', 'gen-placeholder-2', 'gen-clear-2');
+
+        
+        async function fetchWithRetry(url, options, maxRetries = 3) {
+            let delay = 1000;
+            for (let i = 0; i < maxRetries; i++) {
+                try {
+                    const response = await fetch(url, options);
+                    if (response.status === 429) {
+                        throw new Error("Throttled");
+                    }
+                    return response;
+                } catch (err) {
+                    if (i === maxRetries - 1) throw err;
+                    await new Promise(resolve => setTimeout(resolve, delay));
+                    delay *= 2;
+                }
+            }
+        }
+
+        // Tab 1: Image Description
+        async function generateDescription() {
+            const imgData = document.getElementById('desc-img-data').value;
+            if (!imgData) {
+                showToast("Silakan unggah atau paste gambar terlebih dahulu!", true);
+                return;
+            }
+
+            const loadingEl = document.getElementById('desc-loading');
+            const outputEl = document.getElementById('desc-output');
+            const btnEl = document.getElementById('btn-generate-desc');
+
+            loadingEl.classList.remove('hidden');
+            loadingEl.classList.add('flex');
+            btnEl.disabled = true;
+            btnEl.classList.add('opacity-50', 'cursor-not-allowed');
+
+            const systemPrompt = `Anda adalah asisten AI ahli fotografi dan deskripsi gambar yang sangat presisi untuk keperluan Image Generator.
+
+ATURAN MUTLAK (JIKA DILANGGAR DESKRIPSI GAGAL):
+1. DILARANG KERAS mendeskripsikan/menyebutkan Etnis, Ras, Rambut, Gaya Rambut, Warna Rambut, Kumis, Janggut, Jenggot, atau wajah. Anggap bagian kepala tidak ada dalam deskripsi.
+2. JANGAN gunakan kata sapaan atau penutup (misal: "Ini gambar...", "Berikut adalah...").
+3. FORMAT WAJIB DIMULAI DENGAN: "Buatkan gambar seorang [gender/objek/karakter] (gambar referensi) " lalu lanjutkan dengan deskripsi.
+
+YANG WAJIB DIDESKRIPSIKAN SANGAT DETAIL:
+- Pakaian: Bahan, warna, gaya, tekstur, aksesoris (selain di kepala/wajah), sepatu.
+- Tempat/Lokasi: Latar belakang sangat spesifik, suasana, cuaca, pencahayaan, waktu.
+- Pose dan Ekspresi: Jelaskan pose tubuh secara detail dan ekspresi secara akurat (tanpa menyebut fitur wajah struktural, hanya emosinya, misal "tersenyum lebar", "muka garang").
+- Teknik Pengambilan Gambar: Jarak (misal: diambil dari samping, full shot, close up tubuh, low angle).
+- Efek Kamera: Tambahkan detail seperti "diambil menggunakan kamera iPhone 16 Pro Max", "pencahayaan sinematik".
+- Lensa: Jika gambar terlihat lebar/wide, sertakan "menggunakan lensa wide-angle" agar output sama persis dengan referensi.`;
+
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${API_KEY}`;
+            
+            const payload = {
+                contents: [{
+                    parts: [
+                        { text: "Deskripsikan gambar ini sesuai instruksi." },
+                        {
+                            inlineData: {
+                                mimeType: "image/jpeg", // Assuming jpeg, model usually handles standard types
+                                data: imgData
+                            }
+                        }
+                    ]
+                }],
+                systemInstruction: {
+                    parts: [{ text: systemPrompt }]
+                }
+            };
+
+            try {
+                const response = await fetchWithRetry(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const data = await response.json();
+                
+                if (data.candidates && data.candidates[0].content && data.candidates[0].content.parts) {
+                    const resultText = data.candidates[0].content.parts[0].text.trim();
+                    outputEl.value = resultText;
+                    showToast("Deskripsi berhasil diekstrak!");
+                } else {
+                    throw new Error("Format respons API tidak sesuai.");
+                }
+
+            } catch (error) {
+                console.error(error);
+                showToast("Terjadi kesalahan saat mengekstrak gambar. Coba lagi.", true);
+                outputEl.value = "Error: " + error.message;
+            } finally {
+                loadingEl.classList.add('hidden');
+                loadingEl.classList.remove('flex');
+                btnEl.disabled = false;
+                btnEl.classList.remove('opacity-50', 'cursor-not-allowed');
+            }
+        }
+
+        // Tab 2: Image Generation (Nano Banana / gemini-3.1-flash-image-preview)
+        async function generateImage() {
+            const promptText = document.getElementById('gen-prompt').value.trim();
+            const img1Data = document.getElementById('gen-data-1').value;
+            const img1Mime = document.getElementById('gen-mime-1').value;
+            const img2Data = document.getElementById('gen-data-2').value;
+            const img2Mime = document.getElementById('gen-mime-2').value;
+
+            if (!promptText) {
+                showToast("Silakan masukkan teks prompt!", true);
+                document.getElementById('gen-prompt').focus();
+                return;
+            }
+
+            const loadingEl = document.getElementById('gen-loading');
+            const resultImg = document.getElementById('gen-result-img');
+            const emptyState = document.getElementById('gen-empty-state');
+            const actionsEl = document.getElementById('gen-actions');
+            const btnEl = document.getElementById('btn-generate-img');
+
+            loadingEl.classList.remove('hidden');
+            loadingEl.classList.add('flex');
+            btnEl.disabled = true;
+            btnEl.classList.add('opacity-50', 'cursor-not-allowed');
+            
+            // Build parts array
+            let requestParts = [{ text: promptText }];
+            
+            if (img1Data) {
+                requestParts.push({
+                    inlineData: { mimeType: img1Mime || "image/jpeg", data: img1Data }
+                });
+            }
+            if (img2Data) {
+                requestParts.push({
+                    inlineData: { mimeType: img2Mime || "image/jpeg", data: img2Data }
+                });
+            }
+
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-image-preview:generateContent?key=${API_KEY}`;
+            
+            const payload = {
+                contents: [{
+                    role: 'user',
+                    parts: requestParts
+                }],
+                generationConfig: {
+                    responseModalities: ['IMAGE'],
+                    imageConfig: { aspectRatio: "16:9" } // Defaulting to wide, can be dynamic if needed
+                }
+            };
+
+            try {
+                const response = await fetchWithRetry(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const data = await response.json();
+                
+                const part = data?.candidates?.[0]?.content?.parts?.find(p => p.inlineData);
+                
+                if (part && part.inlineData) {
+                    const imageUrl = `data:${part.inlineData.mimeType};base64,${part.inlineData.data}`;
+                    
+                    // Display image
+                    resultImg.src = imageUrl;
+                    resultImg.classList.remove('hidden');
+                    emptyState.classList.add('hidden');
+                    actionsEl.classList.remove('hidden');
+                    
+                    showToast("Render selesai! Karya Anda siap.");
+                } else {
+                    throw new Error("Model gagal mengembalikan gambar.");
+                }
+
+            } catch (error) {
+                console.error(error);
+                showToast("Gagal merender gambar. Pastikan prompt aman atau coba lagi.", true);
+            } finally {
+                loadingEl.classList.add('hidden');
+                loadingEl.classList.remove('flex');
+                btnEl.disabled = false;
+                btnEl.classList.remove('opacity-50', 'cursor-not-allowed');
+            }
+        }
+
+        // Preview and Download Functions
+        function previewImageFullscreen() {
+            const resultImg = document.getElementById('gen-result-img');
+            if (!resultImg.src || resultImg.src.includes('empty')) return;
+            
+            const modal = document.getElementById('fullscreen-modal');
+            const fullImg = document.getElementById('fullscreen-img');
+            
+            fullImg.src = resultImg.src;
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('fullscreen-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function downloadGeneratedImage() {
+            const resultImg = document.getElementById('gen-result-img');
+            if (!resultImg.src || resultImg.src.includes('empty')) return;
+            
+            const a = document.createElement('a');
+            a.href = resultImg.src;
+            a.download = `Rav_AI_Gen_${new Date().getTime()}.png`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            
+            showToast("Gambar berhasil diunduh!");
+        }
+
+    </script>
+</body>
+</html>
